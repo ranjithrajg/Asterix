@@ -1,0 +1,291 @@
+//import org.gradle.plugins.ide.eclipse.model.SourceFolder
+
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+}
+
+group 'com.asterix'
+version '1.0-SNAPSHOT'
+sourceCompatibility = '11'
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+def buildDir = "D:\\IApps\\Asterix\\Asterix-0.0.1"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+def classesDir = "out\\classes"
+def classesMainDir = "out\\classes\\main"
+def classesTestDir = "out\\classes\\test"
+
+def libHome = buildDir + "\\lib"
+def resourcesDir = buildDir + "\\conf\\db"
+
+def zkynetLibDir = libHome + "\\zkynet-0.0.1"
+def springLibDir = libHome + "\\spring"
+def junitLibDir = libHome + "\\junit-5.7.0"
+def nettyLibDir = libHome + "\\netty-4.1.58"
+def reactorLibDir = libHome + "\\reactor-1.0.3"
+def rsocketLibDir = libHome + "\\rsocket-1.1.0"
+def log4jLibDir = libHome + "\\log4j-2.14.0"
+def slf4jLibDir = libHome + "\\slf4j-1.7.25"
+def jsonLibDir = libHome + "\\json-20201115"
+def luceneLibDir = libHome + "\\lucene-7.4.0"
+def ini4jLibDir = libHome + "\\ini4j-0.5.4"
+def myBatisDir = libHome + "\\mybatis-3.5.6"
+def jacksonDir = libHome + "\\jackson-2.12.1"
+def jgroupsDir = libHome + "\\jgroups-4.2.4"
+def jsonpDir = libHome + "\\jsonp"
+def vertxDir = libHome + "\\vertx"
+
+project.buildDir = file(classesDir)
+
+jar.enabled = false
+
+//allprojects {
+//    apply plugin: 'eclipse'
+//    plugins.withType(JavaBasePlugin) {
+//        File eclipseBuild = file(classesDir)
+//        eclipse.classpath.defaultOutputDir = eclipseBuild
+//        project.buildDir = eclipseBuild
+//        eclipse.classpath.file.whenMerged { classpath ->
+//            classpath.entries.findAll { it instanceof SourceFolder }.each { folder ->
+//                folder.output = classesDir
+//            }
+//        }
+//    }
+//}
+
+allprojects {
+    apply plugin: 'idea'
+    idea {
+        module {
+            outputDir = file(classesMainDir)
+            testOutputDir = file(classesTestDir)
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(libHome) { include '*.jar' }
+    implementation fileTree(zkynetLibDir) { include '*.jar' }
+    implementation fileTree(springLibDir) { include '*.jar' }
+    implementation fileTree(junitLibDir) { include '*.jar' }
+    implementation fileTree(nettyLibDir) { include '*.jar' }
+    implementation fileTree(reactorLibDir) { include '*.jar' }
+    implementation fileTree(rsocketLibDir) { include '*.jar' }
+    implementation fileTree(log4jLibDir) { include '*.jar' }
+    implementation fileTree(slf4jLibDir) { include '*.jar' }
+    implementation fileTree(jsonLibDir) { include '*.jar' }
+    implementation fileTree(luceneLibDir) { include '*.jar' }
+    implementation fileTree(ini4jLibDir) { include '*.jar' }
+    implementation fileTree(myBatisDir) { include '*.jar' }
+    implementation fileTree(jacksonDir) { include '*.jar' }
+    implementation fileTree(jgroupsDir) { include '*.jar' }
+    implementation fileTree(jsonpDir) { include '*.jar' }
+    implementation fileTree(vertxDir) { include '*.jar' }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+}
+
+task asterixCoreJar() {
+    description = 'Updates Asterix core Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-core.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/launcher/**')
+    }
+}
+
+task asterixDatabaseJar() {
+    description = 'Updates Asterix Database Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-database-core.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/modcore/database/**') {
+            service(type : 'com.atom.commons.modz.AppModule') {
+                provider(classname : 'com.asterix.modcore.database.DatabaseModule')
+            }
+        }
+    }
+}
+
+task asterixDatabaseGatewayJar() {
+    description = 'Updates Asterix Database-Gateway Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-database-gateway.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/modgateway/database/**') {
+            service(type : 'com.atom.commons.modz.AppModuleGateway') {
+                provider(classname : 'com.asterix.modgateway.database.DatabaseGateway')
+            }
+        }
+    }
+}
+
+task asterixCacheJar() {
+    description = 'Updates Asterix Cache Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-cache-core.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/modcore/cache/**') {
+            service(type : 'com.atom.commons.modz.AppModule') {
+                provider(classname : 'com.asterix.modcore.cache.CacheModule')
+            }
+        }
+    }
+}
+
+task asterixCacheGatewayJar() {
+    description = 'Updates Asterix Cache-Gateway Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-cache-gateway.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/modgateway/cache/**') {
+            service(type : 'com.atom.commons.modz.AppModuleGateway') {
+                provider(classname : 'com.asterix.modgateway.cache.CacheGateway')
+            }
+        }
+    }
+}
+
+task asterixCerberusJar() {
+    description = 'Updates Asterix Cerberus Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-cerberus-core.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/modcore/cerberus/**') {
+            service(type : 'com.atom.commons.modz.AppModule') {
+                provider(classname : 'com.asterix.modcore.cerberus.CerberusModule')
+            }
+        }
+    }
+}
+
+task asterixCerberusGatewayJar() {
+    description = 'Updates Asterix Cerberus-Gateway Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-cerberus-gateway.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/modgateway/cerberus/**') {
+            service(type : 'com.atom.commons.modz.AppModuleGateway') {
+                provider(classname : 'com.asterix.modgateway.cerberus.CerberusGateway')
+            }
+        }
+    }
+}
+
+task asterixStoreJar() {
+    description = 'Updates Asterix Store Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-store-core.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/modcore/store/**') {
+            service(type : 'com.atom.commons.modz.AppModule') {
+                provider(classname : 'com.asterix.modcore.store.StoreModule')
+            }
+        }
+    }
+}
+
+task asterixStoreGatewayJar() {
+    description = 'Updates Asterix Store-Gateway Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-store-gateway.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/modgateway/store/**') {
+            service(type : 'com.atom.commons.modz.AppModuleGateway') {
+                provider(classname : 'com.asterix.modgateway.store.StoreGateway')
+            }
+        }
+    }
+}
+
+task asterixOrdersJar() {
+    description = 'Updates Asterix Orders Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-orders-core.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/modcore/orders/**') {
+            service(type : 'com.atom.commons.modz.AppModule') {
+                provider(classname : 'com.asterix.modcore.orders.OrdersModule')
+            }
+        }
+    }
+}
+
+task asterixOrdersGatewayJar() {
+    description = 'Updates Asterix Orders-Gateway Jar'
+    group = 'JarUpdation'
+    doFirst {
+        ant.jar(update : "true",
+                index : "true",
+                destfile : buildDir + '\\lib\\asterix-orders-gateway.jar',
+                basedir : classesMainDir,
+                includes : '**/com/asterix/modgateway/orders/**') {
+            service(type : 'com.atom.commons.modz.AppModuleGateway') {
+                provider(classname : 'com.asterix.modgateway.orders.OrdersGateway')
+            }
+        }
+    }
+}
+
+task asterixJar () {
+    description = 'Updates Asterix Jar'
+    group = 'JarUpdation'
+    dependsOn asterixCoreJar
+    dependsOn asterixDatabaseJar
+    dependsOn asterixDatabaseGatewayJar
+    dependsOn asterixCacheJar
+    dependsOn asterixCacheGatewayJar
+    dependsOn asterixCerberusJar
+    dependsOn asterixCerberusGatewayJar
+    dependsOn asterixStoreJar
+    dependsOn asterixStoreGatewayJar
+    dependsOn asterixOrdersJar
+    dependsOn asterixOrdersGatewayJar
+}
+
+compileJava {
+    options.listFiles = true
+    options.incremental = true
+}
