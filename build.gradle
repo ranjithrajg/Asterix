@@ -78,7 +78,7 @@ dependencies {
     implementation fileTree(reactorLibDir) { include '*.jar' }
     implementation fileTree(rsocketLibDir) { include '*.jar' }
     implementation fileTree(log4jLibDir) { include '*.jar' }
-    implementation fileTree(slf4jLibDir) { include '*.jar' }
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     implementation fileTree(jsonLibDir) { include '*.jar' }
     implementation fileTree(luceneLibDir) { include '*.jar' }
     implementation fileTree(ini4jLibDir) { include '*.jar' }
