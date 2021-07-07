@@ -15,7 +15,7 @@ sourceCompatibility = '11'
 repositories {
     mavenCentral()
     maven {
-        url "https://mvnrepository.com/artifact/
+        url "https://mvnrepository.com/artifact/"
     }
     maven {
         url "https://mvnrepository.com/artifact/org.slf4j/slf4j-api"
