@@ -17,9 +17,6 @@ repositories {
     maven {
         url "https://mvnrepository.com/artifact/"
     }
-    maven {
-        url "https://mvnrepository.com/artifact/org.slf4j/slf4j-api"
-    }
 }
 
 
@@ -37,16 +34,12 @@ def libHome = buildDir + "\\lib"
 def resourcesDir = buildDir + "\\conf\\db"
 
 def zkynetLibDir = libHome + "\\zkynet-0.0.1"
-def springLibDir = libHome + "\\spring"
-def junitLibDir = libHome + "\\junit-5.7.0"
-def nettyLibDir = libHome + "\\netty-4.1.58"
+//def nettyLibDir = libHome + "\\netty-4.1.58"
 def reactorLibDir = libHome + "\\reactor-1.0.3"
 def rsocketLibDir = libHome + "\\rsocket-1.1.0"
 def log4jLibDir = libHome + "\\log4j-2.14.0"
-def slf4jLibDir = libHome + "\\slf4j-1.7.25"
 def jsonLibDir = libHome + "\\json-20201115"
 def luceneLibDir = libHome + "\\lucene-7.4.0"
-def ini4jLibDir = libHome + "\\ini4j-0.5.4"
 def myBatisDir = libHome + "\\mybatis-3.5.6"
 def jacksonDir = libHome + "\\jackson-2.12.1"
 def jgroupsDir = libHome + "\\jgroups-4.2.4"
@@ -84,16 +77,16 @@ allprojects {
 dependencies {
     implementation fileTree(libHome) { include '*.jar' }
     implementation fileTree(zkynetLibDir) { include '*.jar' }
-    implementation fileTree(springLibDir) { include '*.jar' }
-    implementation fileTree(junitLibDir) { include '*.jar' }
-    implementation fileTree(nettyLibDir) { include '*.jar' }
-    implementation fileTree(reactorLibDir) { include '*.jar' }
+    //implementation fileTree(springLibDir) { include '*.jar' }
+    //implementation fileTree(junitLibDir) { include '*.jar' }
+    implementation group: 'io.netty', name: 'netty-all', version: '4.1.58.Final'
+    implementation group: 'io.projectreactor.netty', name: 'reactor-netty', version: '1.0.3'
     implementation fileTree(rsocketLibDir) { include '*.jar' }
     implementation fileTree(log4jLibDir) { include '*.jar' }
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     implementation fileTree(jsonLibDir) { include '*.jar' }
     implementation fileTree(luceneLibDir) { include '*.jar' }
-    implementation fileTree(ini4jLibDir) { include '*.jar' }
+    //implementation fileTree(ini4jLibDir) { include '*.jar' }
     implementation fileTree(myBatisDir) { include '*.jar' }
     implementation fileTree(jacksonDir) { include '*.jar' }
     implementation fileTree(jgroupsDir) { include '*.jar' }
