@@ -32,19 +32,8 @@ def classesTestDir = "out\\classes\\test"
 
 def libHome = buildDir + "\\lib"
 def resourcesDir = buildDir + "\\conf\\db"
-
 def zkynetLibDir = libHome + "\\zkynet-0.0.1"
-//def nettyLibDir = libHome + "\\netty-4.1.58"
-def reactorLibDir = libHome + "\\reactor-1.0.3"
-def rsocketLibDir = libHome + "\\rsocket-1.1.0"
-def log4jLibDir = libHome + "\\log4j-2.14.0"
-def jsonLibDir = libHome + "\\json-20201115"
-def luceneLibDir = libHome + "\\lucene-7.4.0"
-def myBatisDir = libHome + "\\mybatis-3.5.6"
-def jacksonDir = libHome + "\\jackson-2.12.1"
-def jgroupsDir = libHome + "\\jgroups-4.2.4"
-def jsonpDir = libHome + "\\jsonp"
-def vertxDir = libHome + "\\vertx"
+
 
 project.buildDir = file(classesDir)
 
@@ -77,21 +66,29 @@ allprojects {
 dependencies {
     implementation fileTree(libHome) { include '*.jar' }
     implementation fileTree(zkynetLibDir) { include '*.jar' }
-    //implementation fileTree(springLibDir) { include '*.jar' }
-    //implementation fileTree(junitLibDir) { include '*.jar' }
     implementation group: 'io.netty', name: 'netty-all', version: '4.1.58.Final'
     implementation group: 'io.projectreactor.netty', name: 'reactor-netty', version: '1.0.3'
-    implementation fileTree(rsocketLibDir) { include '*.jar' }
-    implementation fileTree(log4jLibDir) { include '*.jar' }
+    implementation group: 'io.rsocket', name: 'rsocket-core', version: '1.1.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
-    implementation fileTree(jsonLibDir) { include '*.jar' }
-    implementation fileTree(luceneLibDir) { include '*.jar' }
-    //implementation fileTree(ini4jLibDir) { include '*.jar' }
-    implementation fileTree(myBatisDir) { include '*.jar' }
-    implementation fileTree(jacksonDir) { include '*.jar' }
-    implementation fileTree(jgroupsDir) { include '*.jar' }
-    implementation fileTree(jsonpDir) { include '*.jar' }
-    implementation fileTree(vertxDir) { include '*.jar' }
+    implementation group: 'org.json', name: 'json', version: '20201115'
+    implementation group: 'org.apache.lucene', name: 'lucene-core', version: '7.4.0'
+    implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.6'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.1'
+    implementation group: 'org.jgroups', name: 'jgroups', version: '4.2.4.Final'
+    
+    //implementation fileTree(jsonpDir) { include '*.jar' }
+    implementation group: 'jakarta.json', name: 'jakarta.json-api', version: '2.0.0'
+    implementation group: 'org.glassfish', name: 'jsonp-jaxrs', version: '2.0.0'
+    implementation group: 'org.glassfish', name: 'jakarta.json', version: '2.0.0'
+
+    //implementation fileTree(vertxDir) { include '*.jar' }
+    implementation group: 'io.vertx', name: 'vertx-auth-common', version: '4.0.3'
+    implementation group: 'io.vertx', name: 'vertx-auth-jwt', version: '4.0.3'
+    implementation group: 'io.vertx', name: 'vertx-bridge-common', version: '4.0.3'
+    implementation group: 'io.vertx', name: 'vertx-core', version: '4.0.3'
+    implementation group: 'io.vertx', name: 'vertx-web', version: '4.0.3'
+    implementation group: 'io.vertx', name: 'vertx-web-common', version: '4.0.3'   
 }
 
 sourceSets {
